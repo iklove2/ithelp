@@ -43,3 +43,15 @@ jobs:
           echo "✅ Successfully pushed to:"
           echo "- ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest"
           echo "- ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}"
+          
+      - name: Deploy to Server
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.ithelp.asiaak.ru }}
+          username: ${{ secrets.webuser }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+            docker stop ithelp || true
+            docker rm ithelp || true
+            docker run -d --name ithelp -p 3000:3000 ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
