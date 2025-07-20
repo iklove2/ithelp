@@ -2,23 +2,44 @@ name: Docker Build and Push
 
 on:
   push:
-    branches: [ main ]
+    branches: [ "main" ]
+    tags: [ "v*.*.*" ]
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: iklove2/ithelp  # Формат: ghcr.io/owner/repo
 
 jobs:
-  build:
+  docker-build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write  # Требуется для GHCR
+
     steps:
-      - uses: actions/checkout@v2
-      
-      - name: iklove2
-        uses: docker/login-action@v1
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Login to GHCR
+        uses: docker/login-action@v3
         with:
-          username: ${{ secrets.DOCKER_HUB_WEBUSER }}
-          password: ${{ secrets.SomeSecretsPassword12345 }}
-      
-      - name: Build and push
-        uses: docker/build-push-action@v2
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and Push
+        uses: docker/build-push-action@v5
         with:
           context: .
           push: true
-          tags: iklove2/ithelp:latest
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+          labels: |
+            org.opencontainers.image.source=${{ github.repositoryUrl }}
+
+      - name: Show Image URL
+        run: |
+          echo "✅ Successfully pushed to:"
+          echo "- ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest"
+          echo "- ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}"
