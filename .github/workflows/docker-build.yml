@@ -47,34 +47,9 @@ jobs:
       - name: Deploy to Server
         uses: appleboy/ssh-action@v1
         with:
-          host: ${{ secrets.ithelp.asiaak.ru }}
-          username: ${{ secrets.webuser }}
-          key: ${{ secrets.PuTTY-User-Key-File-3: ssh-rsa
-Encryption: none
-Comment: rsa-key-20250718
-Public-Lines: 6
-AAAAB3NzaC1yc2EAAAADAQABAAABAQCAxlkjVd4dl19FvFE32/SxAKCAzV3RtLMu
-8yj6DfEkJ3EMkKwPZMSJeUpNIxWyvENOJXAB529JbEvMO3ILlgwaOCP9aIzweDub
-XJ0WqtwL+TTGZdWE8coKl3HUku/SNCW6S6mbeZdy5xrYVf86lbIAT1QYf++qCkpm
-jLhc9t3nMWuOHBU+1KpzEnbLpZB2lPODuVK5F0nkI/usEvQL969dIIArB6WqUVGS
-jjT1sdT8DrE7Vgnf1XnAf/NtnNBihMYCcOzVtay+iikCsh/DMvf7ZBHU/yhl22Ec
-HLV64orqGdODcJzZ+h3TrSqlerAwmIGGZWQBIK2NLiaBmeEJ7Cm9
-Private-Lines: 14
-AAABACdW8OJHmCxoEvXl2tX6vxzXuTDADFpFHrxIEouZeMJ3viR9ieLGAPiSci1w
-e2937gPQkhAy2J+QkvNYcbWyaA4WeoAu0WehA2yp9V94YPLTddjqQTl0+CkWLPMo
-1FTeE2x/MthJZAf5LA1M8ETAeHl5wpIde2Tx8dq0QJo93HqFAhno1PXxBqfnQmsd
-cYpwv0GROk9wCl99ELQyxEN9ajGKHhrmbjeUgpiZFriJLcbaSg9UPLKtndQq5Ul/
-HW9rqvK17OgiKq9K/6O+xsjym1iTclG+TD7/uPyVfmRGw169szs3zmDjGfS3oxok
-wn21zwjEWc18jy+1BNLMfOu+X60AAACBAMaWxHZPLndLG7O6HaOe8p2O/ds6MsDz
-HC8PMYjBCCOSZM/5/fRTEt7ksVOdhxtAJX9bHaZV83YHnki/Uokus0yYAaceADEm
-nZjLORW4Qgv9EdOwCN3qwUtOL1qdemLQjWfe4zTMIWOtPpAkMekz/+0uEii+ZVyh
-KhakhPw1zqADAAAAgQCmAMEI9x3jJsNX0pwobeKugwPdrW5tge9jIgv0QlwsC/DS
-LZQhqG3sGV0TCa8m7lPZSFZpTnJk4JmiVsYQ2kXGt/LQDge3L5BpT3fHhIlSPs59
-wVI5/sQBknalCvAYYO9gShL3prd765FfXrLIXJS75jnA21xDz/Jbyuhs/WZDPwAA
-AIEAw3oX1JHt7vlvq+Id/9RdvdimLZcCn/ZS0zqRRGEl09q+GY5/5TD+QTOrAVSk
-JZV29lANqunQTcCogZnODNXmvp3f5jOatenI+RRltjljSzulc2Fzskhj/2gPiNvY
-JnlATAfaVmDAIyllKaV5V9dolyWYSRPEFmyf2MxzKZkrdoA=
-Private-MAC: 592f194b99921724cbc828c6061e39964272342bba4027d956889a5195fb7c85 }}
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
           script: |
             docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
             docker stop ithelp || true
